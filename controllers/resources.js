@@ -16,7 +16,16 @@ function create(req, res) {
   })
 }
 
+function index(req, res) {
+  Resource.find({})
+  .populate('owner')
+  .then(resources => {
+    res.json(resources)
+  })
+}
+
 
 export {
   create,
+  index,
 }
