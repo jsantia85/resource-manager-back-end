@@ -24,8 +24,27 @@ function index(req, res) {
   })
 }
 
+function deleteOne(req, res) {
+  Resource.findById(req.params.id)
+  .then(resource => {
+    if (resource.owner._id.equals(req.user.profile)){
+      Resource.findByIdAndDelete(resource._id)
+      .then(deletedResource => {
+        res.json(deletedResource)
+      })
+    } else {
+      res.status(401).json({err: "Not authorized"})
+    }
+  })
+  .catch(err => {
+    console.log(err)
+    res.status(500).json({err: err.errmsg})
+  })
+}
+
 
 export {
   create,
   index,
+  deleteOne as delete,
 }
