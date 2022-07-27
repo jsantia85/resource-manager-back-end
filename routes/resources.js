@@ -9,6 +9,7 @@ router.get('/', resourcesCtrl.index)
 router.use(decodeUserFromToken)
 router.post('/', checkAuth, resourcesCtrl.create)
 router.delete('/:id', checkAuth, resourcesCtrl.delete)
+router.put('/:id', checkAuth, resourcesCtrl.update)
 
 
 export {

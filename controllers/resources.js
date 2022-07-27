@@ -42,9 +42,29 @@ function deleteOne(req, res) {
   })
 }
 
+function update(req, res) {
+  Resource.findById(req.params.id)
+  .then(resource => {
+    if (resource.owner._id.equals(req.user.profile)) {
+      Resource.findByIdAndUpdate(req.params.id, req.body, {new: true})
+      .populate('owner')
+      .then(updatedResource => {
+        res.json(updatedResource)
+      })
+    } else {
+      res.status(401).json({err: "Not authorized!"})
+    }
+  })
+  .catch(err => {
+    console.log(err)
+    res.status(500).json({err: err.errmsg})
+  })
+}
+
 
 export {
   create,
   index,
   deleteOne as delete,
+  update,
 }
